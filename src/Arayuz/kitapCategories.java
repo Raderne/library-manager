@@ -5,6 +5,7 @@
 package Arayuz;
 
 import Services.BookCategoryService;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,13 +13,17 @@ import Services.BookCategoryService;
  */
 public class kitapCategories extends javax.swing.JFrame {
 
+    DefaultTableModel model;
     /**
      * Creates new form kitapCategories
      */
     public kitapCategories() {
         initComponents();
+        model = (DefaultTableModel) jtableCategories.getModel();
     }
 
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,8 +50,6 @@ public class kitapCategories extends javax.swing.JFrame {
 
         jLabel2.setText("Category Name");
 
-        jtxtCategoryName.setText("jTextField1");
-
         jlblCategoryID.setText("Category Name");
 
         jbtnAdd.setText("ADD");
@@ -57,10 +60,25 @@ public class kitapCategories extends javax.swing.JFrame {
         });
 
         jbtnUpdate.setText("UPDATE");
+        jbtnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnUpdateActionPerformed(evt);
+            }
+        });
 
         jbtnRemove.setText("REMOVE");
+        jbtnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnRemoveActionPerformed(evt);
+            }
+        });
 
         jbtnListe.setText("LISTE");
+        jbtnListe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnListeActionPerformed(evt);
+            }
+        });
 
         jtableCategories.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -79,6 +97,11 @@ public class kitapCategories extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jtableCategories.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtableCategoriesMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jtableCategories);
@@ -138,11 +161,50 @@ public class kitapCategories extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void getAllCategory() {
+        DefaultTableModel modelTable = (DefaultTableModel) jtableCategories.getModel();
+        modelTable = new BookCategoryService().getAllCategoryNames(modelTable);
+    }
+    
     private void jbtnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAddActionPerformed
         String name = jtxtCategoryName.getText().trim();
         
         new BookCategoryService().Ekleme(name);
+        
+        getAllCategory();
+        jtxtCategoryName.setText("");
     }//GEN-LAST:event_jbtnAddActionPerformed
+
+    private void jbtnListeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnListeActionPerformed
+        getAllCategory();
+    }//GEN-LAST:event_jbtnListeActionPerformed
+
+    private void jbtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateActionPerformed
+        int categoryID = Integer.parseInt(jlblCategoryID.getText().trim());
+        String Name = jtxtCategoryName.getText().trim();
+        
+        new BookCategoryService().Update(categoryID, Name);
+        jlblCategoryID.setText("ID");
+        jtxtCategoryName.setText("");
+        getAllCategory();
+    }//GEN-LAST:event_jbtnUpdateActionPerformed
+
+    private void jtableCategoriesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtableCategoriesMouseClicked
+        int selectedIndex = jtableCategories.getSelectedRow();
+        Object id = model.getValueAt(selectedIndex, 0);
+        Object name = model.getValueAt(selectedIndex, 1);
+        jlblCategoryID.setText(id.toString());
+        jtxtCategoryName.setText(name.toString());
+    }//GEN-LAST:event_jtableCategoriesMouseClicked
+
+    private void jbtnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRemoveActionPerformed
+        int id = Integer.parseInt(jlblCategoryID.getText().trim());
+        
+        new BookCategoryService().Delete(id);
+        jlblCategoryID.setText("ID");
+        jtxtCategoryName.setText("");
+        getAllCategory();
+    }//GEN-LAST:event_jbtnRemoveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,6 +232,7 @@ public class kitapCategories extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(kitapCategories.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -191,4 +254,6 @@ public class kitapCategories extends javax.swing.JFrame {
     private javax.swing.JTable jtableCategories;
     private javax.swing.JTextField jtxtCategoryName;
     // End of variables declaration//GEN-END:variables
+
+    
 }

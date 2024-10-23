@@ -4,6 +4,12 @@
  */
 package Arayuz;
 
+import Services.BookCategoryService;
+import Services.BooksService;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author msrel
@@ -11,10 +17,19 @@ package Arayuz;
 public class kitaplar extends javax.swing.JFrame {
 
     /**
-     * Creates new form kitaplar
+     * Creates new form
      */
+    DefaultComboBoxModel categoryModel = new DefaultComboBoxModel();
+    ArrayList<DAL.BookCategory> categoryArray;
+    BooksService bookService;
     public kitaplar() {
         initComponents();
+        categoryArray = new ArrayList<>();
+        bookService = new BooksService();
+        BookCategoryService categoryService = new BookCategoryService();
+        
+        jComboBoxCategory.setModel(categoryModel);
+        
     }
 
     /**
@@ -26,21 +41,228 @@ public class kitaplar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jtxtBookName = new javax.swing.JTextField();
+        jtxtBookAuthor = new javax.swing.JTextField();
+        jComboBoxCategory = new javax.swing.JComboBox<>();
+        jbtnRemoveBook = new javax.swing.JButton();
+        jbtnListeBook = new javax.swing.JButton();
+        jbtnAddBook = new javax.swing.JButton();
+        jbtnUpdateBook = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jlblBookID = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        jtxtBookName.setText("Name");
+        jtxtBookName.setToolTipText("name");
+
+        jtxtBookAuthor.setText("author");
+        jtxtBookAuthor.setToolTipText("name");
+
+        jComboBoxCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jbtnRemoveBook.setText("REMOVE");
+        jbtnRemoveBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnRemoveBookActionPerformed(evt);
+            }
+        });
+
+        jbtnListeBook.setText("LISTE");
+        jbtnListeBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnListeBookActionPerformed(evt);
+            }
+        });
+
+        jbtnAddBook.setText("ADD");
+        jbtnAddBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAddBookActionPerformed(evt);
+            }
+        });
+
+        jbtnUpdateBook.setText("UPDATE");
+        jbtnUpdateBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnUpdateBookActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "name", "author", "category"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jlblBookID.setText("jLabel1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 757, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlblBookID, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtxtBookName)
+                            .addComponent(jtxtBookAuthor, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .addComponent(jComboBoxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(135, 135, 135)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtnAddBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jbtnUpdateBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtnRemoveBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jbtnListeBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(72, 72, 72))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 571, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jlblBookID)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jtxtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jtxtBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(66, 66, 66)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jbtnRemoveBook)
+                            .addGap(18, 18, 18)
+                            .addComponent(jbtnListeBook))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jbtnAddBook)
+                            .addGap(18, 18, 18)
+                            .addComponent(jbtnUpdateBook))))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnRemoveBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnRemoveBookActionPerformed
+        int id = Integer.parseInt(jlblBookID.getText().trim());
+        
+        new BooksService().Delete(id);
+        
+        ListAllBooks();
+    }//GEN-LAST:event_jbtnRemoveBookActionPerformed
+
+    private void jbtnListeBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnListeBookActionPerformed
+        ListAllBooks();
+    }//GEN-LAST:event_jbtnListeBookActionPerformed
+
+    private void jbtnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAddBookActionPerformed
+        String bookName = jtxtBookName.getText().trim();
+        String bookAuthor = jtxtBookAuthor.getText().trim();
+        
+        String categoryName = jComboBoxCategory.getSelectedItem().toString();
+        int categoryID = 0;
+        for (int i = 0; i < categoryArray.size(); i++) {
+            if (categoryArray.get(i).categoryName == categoryName) {
+                categoryID = categoryArray.get(i).categoryID;
+            }
+        }
+        
+        if (categoryID != 0 && !bookName.isEmpty()) {
+            new BooksService().Ekleme(bookName, bookAuthor, categoryID);
+            
+            ListAllBooks();
+        }
+    }//GEN-LAST:event_jbtnAddBookActionPerformed
+
+    private void ListAllBooks() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model = new BooksService().getAllBooks(model);
+        
+        temizle();
+    }
+    
+    public void temizle() {
+        jtxtBookAuthor.setText("");
+        jtxtBookName.setText("");
+        jComboBoxCategory.setSelectedIndex(0);
+        jlblBookID.setText("ID");
+    }
+        
+    private void jbtnUpdateBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateBookActionPerformed
+        int id = Integer.parseInt(jlblBookID.getText());
+        String name = jtxtBookName.getText().trim();
+        String author = jtxtBookAuthor.getText().trim();
+        String category = jComboBoxCategory.getSelectedItem().toString();
+        int categoryID = 0;
+        
+        for (int i = 0; i < categoryArray.size(); i++) {
+            if (categoryArray.get(i).categoryName == category) {
+                categoryID = categoryArray.get(i).categoryID;
+            }
+        }
+        
+        new BooksService().update(id, name, author, categoryID);
+        
+        ListAllBooks();
+        
+    }//GEN-LAST:event_jbtnUpdateBookActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        categoryArray = bookService.getAllBooksCategories(categoryModel);
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int rowIndex = jTable1.getSelectedRow();
+        int id = (Integer) model.getValueAt(rowIndex, 0);
+        String name = (String) model.getValueAt(rowIndex, 1);
+        String author = (String) model.getValueAt(rowIndex, 2);
+        String category = (String) model.getValueAt(rowIndex, 3);
+        
+        jtxtBookAuthor.setText(author);
+        jtxtBookName.setText(name);
+        jlblBookID.setText(String.valueOf(id));
+        jComboBoxCategory.setSelectedItem(category);
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -68,6 +290,7 @@ public class kitaplar extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(kitaplar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -78,5 +301,16 @@ public class kitaplar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBoxCategory;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnAddBook;
+    private javax.swing.JButton jbtnListeBook;
+    private javax.swing.JButton jbtnRemoveBook;
+    private javax.swing.JButton jbtnUpdateBook;
+    private javax.swing.JLabel jlblBookID;
+    private javax.swing.JTextField jtxtBookAuthor;
+    private javax.swing.JTextField jtxtBookName;
     // End of variables declaration//GEN-END:variables
+
 }
